@@ -2,10 +2,14 @@ package com.shc.ld34.game.entities;
 
 import com.shc.ld34.game.Resources;
 import com.shc.ld34.game.states.PlayState;
+import com.shc.silenceengine.graphics.Color;
+import com.shc.silenceengine.graphics.SpriteBatch;
 import com.shc.silenceengine.math.Vector2;
 import com.shc.silenceengine.math.geom2d.Rectangle;
 import com.shc.silenceengine.scene.entity.Entity2D;
+import com.shc.silenceengine.utils.GameTimer;
 import com.shc.silenceengine.utils.MathUtils;
+import com.shc.silenceengine.utils.TimeUtils;
 
 import static com.shc.ld34.game.AutoInvaders.*;
 
@@ -20,12 +24,17 @@ public class MotherShip extends Entity2D
 
     private int wave;
 
+    private GameTimer hitTimer;
+
     public MotherShip()
     {
         super(Resources.Sprites.MOTHER_SHIP, new Rectangle(416, 250));
 
         setRotation(180); // 180° rotation
         setCenter(new Vector2(CANVAS_WIDTH / 2, -300));
+
+        hitTimer = new GameTimer(25, TimeUtils.Unit.MILLIS);
+        hitTimer.setCallback(() -> getSprite().setTint(Color.TRANSPARENT));
 
         movingLeft = MathUtils.chance(50);
 
@@ -67,7 +76,13 @@ public class MotherShip extends Entity2D
         if (other instanceof Bullet)
         {
             if (((Bullet) other).getShotBy() == Bullet.ShotBy.PLAYER)
+            {
+                getSprite().setTint(Color.WHITE);
+                hitTimer.start();
+
                 other.destroy();
+                PlayState.SCORE += 5;
+            }
         }
     }
 
@@ -83,5 +98,11 @@ public class MotherShip extends Entity2D
         }
 
         wave++;
+    }
+
+    @Override
+    public void render(float delta, SpriteBatch batch)
+    {
+        super.render(delta, batch);
     }
 }

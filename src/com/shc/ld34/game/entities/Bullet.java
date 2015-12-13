@@ -12,6 +12,9 @@ import static com.shc.ld34.game.AutoInvaders.*;
  */
 public class Bullet extends Entity2D
 {
+    public static int NUM_SHOT_PLAYER;
+    public static int NUM_HIT_ENEMY;
+
     private ShotBy shotBy;
 
     public Bullet(Vector2 center, ShotBy shotBy)
@@ -20,6 +23,9 @@ public class Bullet extends Entity2D
         setCenter(center);
 
         this.shotBy = shotBy;
+
+        if (shotBy == ShotBy.PLAYER)
+            NUM_SHOT_PLAYER++;
 
         getVelocity().y = (shotBy == ShotBy.PLAYER) ? -4 : 4;
     }

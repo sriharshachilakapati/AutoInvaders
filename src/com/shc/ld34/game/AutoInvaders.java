@@ -1,6 +1,6 @@
 package com.shc.ld34.game;
 
-import com.shc.ld34.game.states.PlayState;
+import com.shc.ld34.game.states.EntryState;
 import com.shc.silenceengine.core.Display;
 import com.shc.silenceengine.core.Game;
 import com.shc.silenceengine.core.SilenceEngine;
@@ -35,7 +35,7 @@ public class AutoInvaders extends Game
         Resources.init();
         Resources.Sounds.MUSIC.play();
 
-        setGameState(new PlayState());
+        setGameState(new EntryState());
     }
 
     @Override
@@ -74,7 +74,14 @@ public class AutoInvaders extends Game
             Game.end();
 
         if (Keyboard.isClicked(Keyboard.KEY_F1))
+        {
             Display.setFullScreen(!Display.isFullScreen());
+
+            if (Display.isFullScreen())
+                Display.hideCursor();
+            else
+                Display.showCursor();
+        }
 
         Display.setTitle("AutoInvaders - LD34 Compo entry | FPS: " + Game.getFPS() + " UPS: " + Game.getUPS() + " RC: "
                          + (int) (SilenceEngine.graphics.renderCallsPerFrame));

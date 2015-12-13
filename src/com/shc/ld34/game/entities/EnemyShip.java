@@ -49,6 +49,8 @@ public class EnemyShip extends Entity2D
         });
         shootTimer.start();
 
+        setDepth(-1);
+
         INSTANCES++;
     }
 
@@ -80,7 +82,15 @@ public class EnemyShip extends Entity2D
     @Override
     public void destroy()
     {
-        super.destroy();
-        INSTANCES--;
+        if (!isDestroyed())
+        {
+            INSTANCES--;
+            Bullet.NUM_HIT_ENEMY++;
+            PlayState.SCORE += 10;
+
+            Resources.Sounds.EXPLOSION.play();
+
+            super.destroy();
+        }
     }
 }
